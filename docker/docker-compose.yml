@@ -1,7 +1,7 @@
-version: '3'
 services:
   postgres:
     image: postgres:15
+    container_name: docker-postgres-1
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -11,16 +11,39 @@ services:
 
   airflow:
     image: apache/airflow:2.7.0
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    container_name: docker-airflow-1
+
     depends_on:
       - postgres
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
     volumes:
       - ../dags:/opt/airflow/dags
       - ../scripts:/opt/airflow/scripts
+      - ../raw:/opt/airflow/raw
+      - ../staging:/opt/airflow/staging
+      - ../warehouse:/opt/airflow/warehouse
+      - ../gold:/opt/airflow/gold
+      - ../credentials:/opt/airflow/credentials
+
     ports:
       - "8080:8080"
-    command: >
-      bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin && airflow scheduler & airflow webserver"
+
+    command:
+      - bash
+      - -c
+      - |
+        airflow db init
+        airflow users create \
+          --username airflow \
+          --password airflow \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@email.com || true
+        airflow scheduler &
+        airflow webserver
