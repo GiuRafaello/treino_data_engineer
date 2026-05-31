@@ -1,5 +1,17 @@
 # Projeto de Engenharia de Dados — Pipeline ETL com Airflow, PostgreSQL e Power BI
 
+## Dashboard Power BI
+
+![Dashboard](images/dashboard.png)
+
+---
+
+## Orquestração com Airflow
+
+![Airflow](images/airflow.png)
+
+---
+
 ## Objetivo do Projeto
 
 Este projeto foi desenvolvido para simular um ambiente real de Engenharia de Dados, utilizando um pipeline ETL completo com múltiplas fontes de dados, processamento em camadas e visualização analítica.
