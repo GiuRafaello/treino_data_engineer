@@ -8,7 +8,7 @@ from google.cloud import bigquery
 # ==========================
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
-    "credentials/google_drive_key.json"
+    "/opt/airflow/credentials/google_drive_key.json"
 )
 
 PROJECT_ID = "treinodataengineer"
@@ -19,7 +19,7 @@ DATASET_ID = "treino_data_engineer"
 # ==========================
 
 engine = create_engine(
-    "postgresql+psycopg2://airflow:airflow@localhost:5432/airflow"
+    "postgresql+psycopg2://airflow:airflow@postgres:5432/airflow"
 )
 
 # ==========================
